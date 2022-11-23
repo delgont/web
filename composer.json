@@ -1,0 +1,45 @@
+{
+    "name": "delgont/web",
+    "description" : "Delgont CMS web traits and helper functions",
+    "keywords": [
+        "laravel CMS",
+        "Delgont Template Functions"
+    ],
+    "homepage": "https://github.com/delgont/delgont-web",
+    "type" : "library",
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name" : "Stephen Okello Omoding",
+            "email" : "okellostephenomoding@gmail.com",
+            "role" : "Developer"
+        },
+        {
+            "name" : "Stephen Delgont",
+            "email" : "stephen.delgont@outlook.com",
+            "role" : "Project Manager, Developer"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Web\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Web\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Web\\DelgontWebServiceProvider"
+            ]
+        }
+    }
+}
