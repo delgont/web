@@ -23,14 +23,22 @@ class PostService
         $this->page = new WebPost();
     }
 
-    public function get($slug)
+    public function get($slug, $postAttributes = [], $relations = [])
     {
         return $this
         ->page
-        ->with($this->getPostRelations())
+        ->with( (count($relations) > 0) ? $relations : $this->getPostRelations())
         ->published('1')
-        ->whereSlug($slug)
-        ->firstOrFail($this->parentPostAttributes());
+        ->whereSlug($slug)->orWhere('id', $slug)
+        ->firstOrFail((count($postAttributes) > 0) ? $postAttributes : $this->parentPostAttributes());
+    }
+
+    public function children($id, $attributes = [])
+    {
+        return $this
+        ->page
+        ->whereParentId($id)
+        ->paginate(5, (count($attributes) > 0) ? $attributes : $this->childrenPostAttributes());
     }
 
     public function getPostRelations()
