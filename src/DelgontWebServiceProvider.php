@@ -35,9 +35,6 @@ class DelgontWebServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->registerPublishables();
         }
-
-        //View Composers
-        $this->mainNavbarMenuViewComposer();
     }
 
     private function registerPublishables() : void

@@ -14,6 +14,8 @@ return [
         'your_menu_key' => 'Your Menu Name'
     ],
 
+    'main_menu_max_item_level' => 1,
+
     /*
     |--------------------------------------------------------------------------
     | Default Menu Items
@@ -98,6 +100,10 @@ return [
         'web.templates.contact-us' => ['name' => 'Contact Us', 'preview' => 'img/templates/default.jpg'],
         'web.templates.default-page' => ['name' => 'Default Page', 'preview' => 'img/templates/default.jpg'],
         'web.templates.events-page' => ['name' => 'Events page', 'preview' => 'img/templates/default.jpg']
+    ],
+
+    'sections' => [
+        'web.sections.hello-world-' => ['name' => 'Hello world section', 'preview' => 'img/templates/default.jpg', 'posts_of_type' => 'hello world'],
     ],
 
 ];

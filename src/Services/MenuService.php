@@ -17,9 +17,9 @@ class MenuService
         $this->menu = new Menu();
     }
 
-    public function get($menu_key)
+    public function get($menu_key, $maxLevel = 0)
     {
-        return $this->menu->where('key',$menu_key)->withOrganisedMenuItems()->first();
+        return $this->menu->where('key',$menu_key)->withMenuItems($maxLevel)->first();
     }
 
     public function getSimpleMenu($menu_key)
