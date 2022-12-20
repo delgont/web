@@ -103,7 +103,28 @@ return [
     ],
 
     'sections' => [
-        'web.sections.hello-world-' => ['name' => 'Hello world section', 'preview' => 'img/templates/default.jpg', 'posts_of_type' => 'hello world'],
+        'web.sections.services' => [
+            'name' => 'Services Section',
+            'preview' => null,
+            'posts_of_type' => 'sevice',
+            'description' => 'Renders Posts Of Type -- Service',
+            'options' => [
+                'posts_of_type' => 'service',
+                'posts_of_category' => 'services',
+                'posts_of_group' => 'services'
+            ]
+        ],
+        'web.sections.team' => [
+            'name' => 'Team member section',
+            'preview' => null,
+            'posts_of_type' => 'sevice',
+            'description' => 'Renders Posts Of Type -- Team',
+            'options' => [
+                'posts_of_type' => 'team',
+                'posts_of_category' => 'team member',
+                'posts_of_group' => 'team members'
+            ]
+        ],
     ],
 
 ];

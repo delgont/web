@@ -8,6 +8,7 @@ use Web\Services\PostService;
 use Web\Concerns\OfType;
 use Web\Concerns\OfCategory;
 
+use Delgont\Cms\Repository\Post\PostRepository;
 
 
 class PostController extends BaseController
@@ -16,25 +17,10 @@ class PostController extends BaseController
 
     public function index($id)
     {
-        $post = app(PostService::class)->get($id, [
-            'id',
-            'post_title',
-            'post_content',
-            'extract_text',
-            'post_content',
-            'post_featured_image',
-            'slug',
-            'menu_id',
-            'created_by',
-            'commentable'
-        ], [
-            'categories:id,name',
-            'menu.menuitems',
-            'author',
-            'comments' => function($query){
-                $query->whereNull('parent_id')->paginate(10);
-            }
-        ]);
+        $post = app(PostRepository::class)
+        ->setCacheAttribute('slug')
+        ->fromCache()
+        ->find( $id, $this->parentPostAttributes(),  $this->getPostRelations() );
         return response()->json($post, 200);
     }
 
@@ -55,6 +41,40 @@ class PostController extends BaseController
     {
         $posts = $this->getPostsOfCategory($category);
         return response()->json($posts, 200);
+    }
+
+    public function getPostRelations()
+    {
+        return [
+            'template:id,path',
+            'categories:id,name',
+            'menu.menuitems',
+            'author',
+            'posts' => function($q){
+                $q->with([
+                    'categories'
+                ])->get();
+            },
+            'comments' => function($query){
+                $query->whereNull('parent_id')->paginate(10);
+            }
+        ];
+    }
+
+    private function parentPostAttributes()
+    {
+        return [
+            'id',
+            'post_title',
+            'extract_text',
+            'post_content',
+            'post_featured_image',
+            'template_id',
+            'slug',
+            'menu_id',
+            'created_by',
+            'commentable'
+        ];
     }
     
 }

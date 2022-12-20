@@ -224,6 +224,7 @@ Use these commands to refresh your application during theme development.
 5. Populate Post Types `php artisan posttype:sync`
 7. Populate Categories `php artisan category:sync`
 7. Populate Categories `php artisan template:sync`
+7. Populate Categories `php artisan section:sync`
 6. Populate Your Page Content `php artisan page:sync`
 5. Populate Menus For Navigation Menu `php artisan menu:sync`
 5. Populate Menus For Navigation MenuItems `php artisan menuitem:sync`

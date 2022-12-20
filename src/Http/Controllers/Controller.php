@@ -9,13 +9,23 @@ use Illuminate\Routing\Controller as BaseController;
 
 use Web\Services\PostService;
 
+use Delgont\Cms\Repository\Post\PostRepository;
+use Delgont\Cms\Models\Post\Post;
+
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected $repository = null;
+    protected $post = null;
+    protected $slug = null;
+
+    protected $postRelations = [];
+    
     public function __construct()
     {
+        
     }
 
     public function index()
@@ -28,6 +38,22 @@ class Controller extends BaseController
 
         ///return response()->json(compact(['post', 'postsOfType', 'template']));
         return (request()->expectsJson()) ? response()->json(compact(['post', 'postsOfType'])) : ($slug == 'home') ? $this->home() : view($template, compact(['post', 'postsOfType']));
+    }
+
+
+    public function view()
+    {
+        $slug = request('slug');
+
+        $this->repository = app(PostRepository::class)->setKey('slug');
+        $post = $this->repository->fromCache()->find($slug);
+        $this->repository->setPost($post);
+
+        $template = ($slug === 'home') ? 'web.index' : $this->repository->templatePath() ?? $this->defaultTemplate();
+        $categories = $this->repository->categories();
+        $posts = $this->repository->ofType() ?? $this->repository->children();
+        
+        return view($template, compact(['post', 'categories', 'posts']));
     }
 
 
@@ -48,4 +74,5 @@ class Controller extends BaseController
     {
         return 'web.templates.default-page';
     }
+
 }

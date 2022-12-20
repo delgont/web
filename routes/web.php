@@ -8,9 +8,9 @@ use Web\Http\Controllers\MenuController;
 /**
  * Web Routes
  */
-Route::group(['prefix' => 'web@cda', 'middleware' => 'web'], function(){
+Route::group(['prefix' => 'web', 'middleware' => 'web'], function(){
 
-    Route::get('/menu/{menu}', [MenuController::class, 'index'])->name('delgont.web.menu');
+    Route::get('/menu/{key}', [MenuController::class, 'index'])->name('delgont.web.menu');
 
     Route::get('/posts/post/{id}', [PostController::class, 'index'])->name('delgont.web.post');
     Route::get('/posts/post/{id}/children', [PostController::class, 'children'])->name('delgont.web.post.children');

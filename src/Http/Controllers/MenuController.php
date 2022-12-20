@@ -10,8 +10,9 @@ use Web\Services\MenuService;
 
 class MenuController extends BaseController
 {
-    public function index($menu)
+    public function index($key)
     {
-        return app(MenuService::class)->get($menu);
+        $menu = app(MenuService::class)->get($key);
+        return response()->json($menu, 200);
     }
 }
