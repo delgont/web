@@ -44,14 +44,16 @@ class Controller extends BaseController
     public function view()
     {
         $slug = request('slug');
+        $postsPerSection = request('page') ?? 1;
 
         $this->repository = app(PostRepository::class)->setKey('slug');
         $post = $this->repository->fromCache()->find($slug);
         $this->repository->setPost($post);
 
-        $template = ($slug === 'home') ? 'web.index' : $this->repository->templatePath() ?? $this->defaultTemplate();
+        $template = ($slug === 'home') ? 'web.index' : $this->getTemplate($this->repository->templatePath());
+
         $categories = $this->repository->categories();
-        $posts = $this->repository->ofType() ?? $this->repository->children();
+        $posts = $this->repository->ofType(null , $postsPerSection, 3) ?? $this->repository->children(null , $postsPerSection, 3);
         
         return view($template, compact(['post', 'categories', 'posts']));
     }
@@ -74,5 +76,11 @@ class Controller extends BaseController
     {
         return 'web.templates.default-page';
     }
+
+    protected function getTemplate($path)
+    {
+        return $path ?? $this->defaultTemplate();
+    }
+
 
 }
