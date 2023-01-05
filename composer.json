@@ -1,11 +1,11 @@
 {
     "name": "delgont/web",
-    "description" : "Delgont CMS web traits and helper functions",
+    "description" : "Delgont CMS content delivery application plugin",
     "keywords": [
         "laravel CMS",
         "Delgont Template Functions"
     ],
-    "homepage": "https://github.com/delgont/delgont-web",
+    "homepage": "https://github.com/delgont/web",
     "type" : "library",
     "license" : "MIT",
     "authors" : [
@@ -20,6 +20,9 @@
             "role" : "Project Manager, Developer"
         }
     ],
+    "require": {
+        "delgont/cms": "^1.1.0"
+    },
     "prefer-stable": true,
     "minimum-stability": "dev",
     "autoload": {

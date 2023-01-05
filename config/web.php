@@ -77,7 +77,11 @@ return [
     ],
 
     'options' => [
-        'option_key' => 'default-value-here'
+        'phone' => '+2567 7428 5504',
+        'email' => 'delgont.stephen@gmail.com',
+        'logo' => 'img/logo.svg',
+        'address' => 'Pallisa Uganda, Plot 19 Olinga Road',
+        'tagline' => 'Create, Manage, Modify your website content without a hassle. With delgont cms, everything is configurable'
     ],
 
    

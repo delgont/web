@@ -9,7 +9,11 @@ use Illuminate\Routing\Controller as BaseController;
 
 use Web\Services\PostService;
 
+//Repositories
 use Delgont\Cms\Repository\Post\PostRepository;
+use Delgont\Cms\Repository\Template\TemplateRepository;
+
+//Models
 use Delgont\Cms\Models\Post\Post;
 
 
@@ -18,6 +22,8 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected $repository = null;
+    protected $postRepository = null;
+    protected $templateRepository = null;
     protected $post = null;
     protected $slug = null;
 
@@ -25,7 +31,8 @@ class Controller extends BaseController
     
     public function __construct()
     {
-        
+        $this->postRepository = app(PostRepository::class)->setKey('slug');
+        $this->templateRepository = app(TemplateRepository::class)->fromCache();
     }
 
     public function index()
@@ -46,14 +53,19 @@ class Controller extends BaseController
         $slug = request('slug');
         $postsPerSection = request('page') ?? 1;
 
-        $this->repository = app(PostRepository::class)->setKey('slug');
-        $post = $this->repository->fromCache()->find($slug);
-        $this->repository->setPost($post);
+        //Get post by its slug
+        $post = $this->postRepository->fromCache()->findOrFail($slug);
+        $this->postRepository->setPost($post);
 
-        $template = ($slug === 'home') ? 'web.index' : $this->getTemplate($this->repository->templatePath());
+        //Get view template path
+        $template = ($slug === 'home') ? $this->home() : $this->getTemplatePath($post->template_id);
 
-        $categories = $this->repository->categories();
-        $posts = $this->repository->ofType(null , $postsPerSection, 3) ?? $this->repository->children(null , $postsPerSection, 3);
+        //Get the categories to which the post belongs to
+        $categories = $this->postRepository->categories( $post );
+
+        $postsOfType = $post->postsOfType()->first();
+
+        $posts = ($postsOfType) ? $this->postRepository->paginated()->getPostsOfType($postsOfType->post_type_id) : $this->postRepository->paginated()->getChildren($post);
         
         return view($template, compact(['post', 'categories', 'posts']));
     }
@@ -65,7 +77,7 @@ class Controller extends BaseController
      */
     protected function home()
     {
-        return view('web.index');
+        return 'web.index';
     }
 
     /**
@@ -77,9 +89,9 @@ class Controller extends BaseController
         return 'web.templates.default-page';
     }
 
-    protected function getTemplate($path)
+    protected function getTemplatePath($id)
     {
-        return $path ?? $this->defaultTemplate();
+        return ($id) ? $this->templateRepository->getTemplatePath($id) : $this->defaultTemplate();
     }
 
 
